@@ -1,3 +1,0 @@
-/home/teen/red_black_tree/Red_Black_Tree/Red_Black_Tree/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/teen/red_black_tree/Red_Black_Tree/Red_Black_Tree/cmake-build-debug/CMakeFiles/Red_Black_Tree.dir
-/home/teen/red_black_tree/Red_Black_Tree/Red_Black_Tree/cmake-build-debug/CMakeFiles/edit_cache.dir

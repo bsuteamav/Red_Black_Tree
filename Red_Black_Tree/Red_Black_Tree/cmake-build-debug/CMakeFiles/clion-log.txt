@@ -1,4 +1,0 @@
-/home/teen/programms/clion-2018.3.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/teen/red_black_tree/Red_Black_Tree/Red_Black_Tree
--- Configuring done
--- Generating done
--- Build files have been written to: /home/teen/red_black_tree/Red_Black_Tree/Red_Black_Tree/cmake-build-debug
