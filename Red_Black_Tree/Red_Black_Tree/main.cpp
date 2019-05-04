@@ -12,5 +12,6 @@ int main() {
 	tree.addNode(30);
 	tree.show();
 
+	system("pause");
 	return 0;
 }
