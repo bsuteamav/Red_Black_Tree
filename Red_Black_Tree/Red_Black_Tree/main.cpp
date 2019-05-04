@@ -1,8 +1,16 @@
 #include <iostream>
+#include "Red_Black_Tree.h"
+#include "Node.h"
 
 using namespace std;
 
+
 int main() {
-	cout << "Hello\n";
+	Red_Black_Tree<int> tree;
+	tree.addNode(50);
+	tree.addNode(40);
+	tree.addNode(30);
+	tree.show();
+
 	return 0;
 }
