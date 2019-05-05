@@ -12,6 +12,7 @@ private:
 
 	void addNode(T data, Node<T>*& Tree);
     void show(Node<T>*& Tree);
+	Node<T>* search(T data, Node<T>* Tree);
 
 public:
 	Red_Black_Tree();
@@ -92,4 +93,38 @@ void Red_Black_Tree<T>::show(Node<T>*& Tree) {
 
         show(Tree->right);
     }
+}
+
+template<typename T>
+inline Node<T>* Red_Black_Tree<T>::search(T data, Node<T>* Tree)
+{
+	// if data wasn't found
+	if (Tree == nullptr) {
+		return nullptr;
+	}
+
+	else {
+		if (Tree->key == data) {
+			return Tree;
+		}
+		// data < Tree->data
+		else if (data < Tree->key) {
+			if (Tree->left != nullptr) {
+				return search(data, Tree->left);
+			}
+			else {
+				return nullptr;
+			}
+		}
+
+		// data > Tree->data
+		else {
+			if (Tree->right != nullptr) {
+				return search(data, Tree->right);
+			}
+			else {
+				return nullptr;
+			}
+		}
+	}
 }
