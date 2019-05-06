@@ -33,7 +33,7 @@ void RightRightRotation(Node<T>* addedNode) {
 
 template<typename T>
 void RightLeftRotation(Node<T>* addedNode){
-    //first part
+    // right rotate P
     addedNode->parent->left = addedNode->right;
     addedNode->right = addedNode->parent;
     addedNode->parent = addedNode->right->parent;
@@ -42,21 +42,6 @@ void RightLeftRotation(Node<T>* addedNode){
         addedNode->right->left->parent = addedNode->right;
     addedNode->parent->right = addedNode;
 
-
+	// right right case for X's previous Parent (now X's right son = P)
     RightRightRotation(addedNode->right);
-    //second part
-    /*addedNode->parent->right = addedNode->left;
-    addedNode->left->parent = addedNode->parent;
-
-    addedNode->left = addedNode->parent;
-    addedNode->color = BLACK;
-    addedNode->parent->color = RED;
-    addedNode->parent = addedNode->left->parent;
-    addedNode->left->parent = addedNode;
-
-    if(addedNode->left == addedNode->parent->left)
-        addedNode->parent->left = addedNode;
-
-    else
-        addedNode->parent->right = addedNode;*/
 }

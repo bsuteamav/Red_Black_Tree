@@ -14,7 +14,7 @@ private:
     void addNode(T data, Node<T>*& Tree);
     void show(Node<T>*& Tree);
     void balance(Node<T>*& Tree);
-
+	void cleanup(Node<T>* tree); // for destructor
 public:
     Red_Black_Tree();
     void addNode(T data);
@@ -29,7 +29,7 @@ Red_Black_Tree<T>::Red_Black_Tree() {
 
 template <typename T>
 Red_Black_Tree<T>::~Red_Black_Tree() {
-    root = nullptr;
+	cleanup(this->root);
 }
 
 template <typename T>
@@ -161,6 +161,16 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
     }
 
 
+}
+
+template<typename T>
+inline void Red_Black_Tree<T>::cleanup(Node<T>* tree)
+{
+	if (tree != nullptr) {
+		cleanup(tree->left);
+		cleanup(tree->right);
+		delete tree;
+	}
 }
 
 template <typename T>
