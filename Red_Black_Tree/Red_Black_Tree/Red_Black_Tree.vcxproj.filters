@@ -29,5 +29,8 @@
     <ClInclude Include="Rotations.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Calculate.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
