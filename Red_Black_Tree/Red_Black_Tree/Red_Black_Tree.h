@@ -40,7 +40,7 @@ void Red_Black_Tree<T>::addNode(T data) {
 template <typename T>
 void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
     //if tree is empty
-    if(root == nullptr){
+    if (root == nullptr) {
         root = new Node<T>;
         root->key = data;
         root->parent = nullptr;
@@ -49,13 +49,13 @@ void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
         root->right = nullptr;
         //new node is the root - don't need to do balance
     }
-    else{
+    else {
         //left subtree
-        if(data < Tree->key){
-            if(Tree->left != nullptr){
+        if (data < Tree->key) {
+            if (Tree->left != nullptr) {
                 addNode(data, Tree->left);
             }
-            else{
+            else {
                 Tree->left = new Node<T>;
                 Tree->left->key = data;
                 Tree->left->parent = Tree;
@@ -68,11 +68,11 @@ void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
             }
         }
         //right subtree
-        else if(data > Tree->key){
-            if(Tree->right != nullptr){
+        else if (data > Tree->key) {
+            if (Tree->right != nullptr) {
                 addNode(data, Tree->right);
             }
-            else{
+            else {
                 Tree->right = new Node<T>;
                 Tree->right->key = data;
                 Tree->right->parent = Tree;
@@ -93,7 +93,7 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
 		return;
 	}
 
-    if(Son != root) {
+    if (Son != root) {
         if (Son->parent->color != BLACK) {
             //if uncle is a Tree->parent->right
             if (Son->parent == Son->parent->parent->left) {
@@ -178,7 +178,7 @@ void Red_Black_Tree<T>::show()
 
 template <typename T>
 void Red_Black_Tree<T>::show(Node<T>*& Tree) {
-    if(Tree != nullptr){
+    if (Tree != nullptr) {
         show(Tree->left);
         cout << Tree->key << " - " << Tree->color << " ";
         show(Tree->right);
