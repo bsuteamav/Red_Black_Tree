@@ -119,9 +119,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculate.h" />
+    <ClInclude Include="LeftAndRightRotations.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Red_Black_Tree.h" />
     <ClInclude Include="Rotations.h" />
+    <ClInclude Include="Rotations_Deletion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,59 +2,28 @@
 
 #include <iostream>
 #include "Node.h"
+#include "LeftAndRightRotations.h"
 
 using namespace std;
 
+// INSERTION; cases 1 - 4
 template<typename T>
-void LeftLeftRotation(Node<T>* addedNode);
-
-template<typename T>
-void LeftRightRotation(Node<T>* addedNode);
+void LeftLeftCase_Rotations_Insertion(Node<T>* addedNode);
 
 template<typename T>
-void RightRightRotation(Node<T>* addedNode);
+void LeftRightCase_Rotations_Insertion(Node<T>* addedNode);
 
 template<typename T>
-void RightLeftRotation(Node<T>* addedNode);
+void RightRightCase_Rotations_Insertion(Node<T>* addedNode);
 
+template<typename T>
+void RightLeftCase_Rotations_Insertion(Node<T>* addedNode);
 
 
 template<typename T>
-inline void LeftLeftRotation(Node<T>* addedNode)
+inline void LeftLeftCase_Rotations_Insertion(Node<T>* addedNode)
 {
-	/* right son of parent becomes left son of grandparent;
-	   grandparent becomes parent for right son of parent
-	*/
-	addedNode->parent->parent->left = addedNode->parent->right;
-	if (addedNode->parent->right != nullptr) {
-		addedNode->parent->right->parent = addedNode->parent->parent;
-	}
-
-	// grandparent becomes right son of parent
-	addedNode->parent->right = addedNode->parent->parent;
-
-	// GP is not nullptr
-	if (addedNode->parent->parent->parent != nullptr) {
-		// GP's left son is G
-		if (addedNode->parent->parent->parent->left == addedNode->parent->parent) {
-			// P's parent = GP; GP's left son = P
-			addedNode->parent->parent = addedNode->parent->parent->parent;
-			addedNode->parent->parent->left = addedNode->parent;
-		}
-		// GP's right son is G
-		else {
-			// P's parent = GP; GP's right son = P
-			addedNode->parent->parent = addedNode->parent->parent->parent;
-			addedNode->parent->parent->right = addedNode->parent;
-		}
-	}
-	// GP is nullptr
-	else {
-		addedNode->parent->parent = nullptr;
-	}
-
-	//  G's parent = P
-	addedNode->parent->right->parent = addedNode->parent;
+	RightRotation(addedNode);
 
 	// swap colors of P and G
 	addedNode->parent->color = BLACK;
@@ -62,7 +31,7 @@ inline void LeftLeftRotation(Node<T>* addedNode)
 }
 
 template<typename T>
-inline void LeftRightRotation(Node<T>* addedNode)
+inline void LeftRightCase_Rotations_Insertion(Node<T>* addedNode)
 {
 	/* P's right son = X's left son
 	   X's left son's parent = P
@@ -86,34 +55,19 @@ inline void LeftRightRotation(Node<T>* addedNode)
 	addedNode->parent->left = addedNode;
 
 	// call LL case for P (X's left son)
-	LeftLeftRotation(addedNode->left);
+	LeftLeftCase_Rotations_Insertion(addedNode->left);
 }
 
 template<typename T>
-void RightRightRotation(Node<T>* addedNode) {
-	addedNode->parent->parent->right = addedNode->parent->left;
-	addedNode->parent->left = addedNode->parent->parent;
-	if (addedNode->parent->left->right != nullptr) {
-		addedNode->parent->left->right->parent = addedNode->parent->left;
-	}
+void RightRightCase_Rotations_Insertion(Node<T>* addedNode) {
+	LeftRotation(addedNode);
 
-	addedNode->parent->left->color = RED;
 	addedNode->parent->color = BLACK;
-
-	addedNode->parent->parent = addedNode->parent->left->parent;
-	addedNode->parent->left->parent = addedNode->parent;
-
-	if (addedNode->parent->parent->left == addedNode->parent->left) {
-		addedNode->parent->parent->left = addedNode->parent;
-	}
-
-	else {
-		addedNode->parent->parent->right = addedNode->parent;
-	}
+	addedNode->parent->left->color = RED;
 }
 
 template<typename T>
-void RightLeftRotation(Node<T>* addedNode) {
+void RightLeftCase_Rotations_Insertion(Node<T>* addedNode) {
 	// right rotate P
 	addedNode->parent->left = addedNode->right;
 	addedNode->right = addedNode->parent;
@@ -125,5 +79,5 @@ void RightLeftRotation(Node<T>* addedNode) {
 	addedNode->parent->right = addedNode;
 
 	// right right case for X's previous Parent (now X's right son = P)
-	RightRightRotation(addedNode->right);
+	RightRightCase_Rotations_Insertion(addedNode->right);
 }
