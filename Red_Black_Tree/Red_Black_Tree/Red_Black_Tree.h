@@ -13,6 +13,7 @@ private:
 
     void addNode(T data, Node<T>*& Tree);
     void show(Node<T>*& Tree);
+	Node<T>* search(T data, Node<T>* Tree);
     void balance(Node<T>*& Tree);
 	void cleanup(Node<T>* tree); // for destructor
 public:
@@ -145,7 +146,7 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
                         balance(Son->parent->parent);
 
                     } 
-					else if (Son->parent->parent->right->color == BLACK) {
+					else if (Son->parent->parent->left->color == BLACK) {
                         //case 3b) rotations
                         performRotation(Son);
                     }
@@ -180,7 +181,47 @@ template <typename T>
 void Red_Black_Tree<T>::show(Node<T>*& Tree) {
     if (Tree != nullptr) {
         show(Tree->left);
-        cout << Tree->key << " - " << Tree->color << " ";
+		cout << Tree->key;
+		if (Tree->color == BLACK) {
+			cout << " - BLACK\n";
+		}
+		else {
+			cout << " - RED\n";
+		}
         show(Tree->right);
     }
+}
+
+template<typename T>
+inline Node<T>* Red_Black_Tree<T>::search(T data, Node<T>* Tree)
+{
+	// if data wasn't found
+	if (Tree == nullptr) {
+		return nullptr;
+	}
+
+	else {
+		if (Tree->key == data) {
+			return Tree;
+		}
+		// data < Tree->data
+		else if (data < Tree->key) {
+			if (Tree->left != nullptr) {
+				return search(data, Tree->left);
+			}
+			else {
+				return nullptr;
+			}
+		}
+
+		// data > Tree->data
+		else {
+			if (Tree->right != nullptr) {
+				return search(data, Tree->right);
+			}
+			else {
+				return nullptr;
+			}
+		}
+	}
 }
