@@ -118,6 +118,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Calculate.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Red_Black_Tree.h" />
     <ClInclude Include="Rotations.h" />
