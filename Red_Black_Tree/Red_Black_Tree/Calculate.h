@@ -34,16 +34,16 @@ void performRotation(Node<T>*& addedNode){
 
     switch (rotationCase){
         case LL:
-            LeftLeftRotation(addedNode);
+            LeftLeftCase_Rotations_Insertion(addedNode);
             break;
         case RL:
-            RightLeftRotation(addedNode);
+            RightLeftCase_Rotations_Insertion(addedNode);
             break;
         case LR:
-            LeftRightRotation(addedNode);
+            LeftRightCase_Rotations_Insertion(addedNode);
             break;
         case RR:
-            RightRightRotation(addedNode);
+            RightRightCase_Rotations_Insertion(addedNode);
             break;
     }
 }

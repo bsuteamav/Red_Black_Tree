@@ -11,4 +11,5 @@ struct Node {
 	bool color;
 	int height;
 	int	depth;
+	bool isDoubleBlack = false;
 };
