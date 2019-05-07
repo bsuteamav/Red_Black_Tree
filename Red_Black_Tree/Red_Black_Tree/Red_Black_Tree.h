@@ -89,6 +89,7 @@ void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
 
 template <typename T>
 void Red_Black_Tree<T>::balance(Node<T> *&Son) {
+	bool isChangeRoot;
 	if (Son == root) {
 		Son->color = BLACK;
 		return;
@@ -117,13 +118,23 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
                     } 
 					else if (Son->parent->parent->right->color == BLACK) {
                         //case 3b) rotations
-                        performRotation(Son);
+						/*TRUE - no need to change root;
+						FALSE - need to change root on addedNode->parent*/
+                        isChangeRoot = performRotation(Son);
+						if (!isChangeRoot) {
+							root = Son->parent;
+						}
                     }
                 }
                 //uncle = nullptr
                 else {
                     //case 3b) rotations
-                    performRotation(Son);
+					/*TRUE - no need to change root;
+					FALSE - need to change root on addedNode->parent*/
+					isChangeRoot = performRotation(Son);
+					if (!isChangeRoot) {
+						root = Son->parent;
+					}
                 }
             }
 
@@ -148,13 +159,23 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
                     } 
 					else if (Son->parent->parent->left->color == BLACK) {
                         //case 3b) rotations
-                        performRotation(Son);
+						/*TRUE - no need to change root;
+						FALSE - need to change root on addedNode->parent*/
+                        isChangeRoot = performRotation(Son);
+						if (!isChangeRoot) {
+							root = Son->parent;
+						}
                     }
                 }
                 //uncle = nullptr
                 else {
                     //case 3b) rotations
-					performRotation(Son);
+					/*TRUE - no need to change root;
+					FALSE - need to change root on addedNode->parent*/
+					isChangeRoot = performRotation(Son);
+					if (!isChangeRoot) {
+						root = Son->parent;
+					}
                 }
             }
         }

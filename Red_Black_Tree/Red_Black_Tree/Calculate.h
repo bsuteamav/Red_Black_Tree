@@ -29,21 +29,23 @@ int calculateCase(Node<T>* addedNode){
 }
 
 template <typename T>
-void performRotation(Node<T>*& addedNode){
+bool performRotation(Node<T>*& addedNode){
+	bool isChangeRoot;
     int rotationCase = calculateCase(addedNode);
 
     switch (rotationCase){
         case LL:
-            LeftLeftCase_Rotations_Insertion(addedNode);
+            isChangeRoot = LeftLeftCase_Rotations_Insertion(addedNode);
             break;
         case RL:
-            RightLeftCase_Rotations_Insertion(addedNode);
+			isChangeRoot = RightLeftCase_Rotations_Insertion(addedNode);
             break;
         case LR:
-            LeftRightCase_Rotations_Insertion(addedNode);
+			isChangeRoot = LeftRightCase_Rotations_Insertion(addedNode);
             break;
         case RR:
-            RightRightCase_Rotations_Insertion(addedNode);
+            isChangeRoot = RightRightCase_Rotations_Insertion(addedNode);
             break;
     }
+	return isChangeRoot;
 }

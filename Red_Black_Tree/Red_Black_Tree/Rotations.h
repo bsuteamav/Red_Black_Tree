@@ -8,30 +8,31 @@ using namespace std;
 
 // INSERTION; cases 1 - 4
 template<typename T>
-void LeftLeftCase_Rotations_Insertion(Node<T>* addedNode);
+bool LeftLeftCase_Rotations_Insertion(Node<T>* addedNode);
 
 template<typename T>
-void LeftRightCase_Rotations_Insertion(Node<T>* addedNode);
+bool LeftRightCase_Rotations_Insertion(Node<T>* addedNode);
 
 template<typename T>
-void RightRightCase_Rotations_Insertion(Node<T>* addedNode);
+bool RightRightCase_Rotations_Insertion(Node<T>* addedNode);
 
 template<typename T>
-void RightLeftCase_Rotations_Insertion(Node<T>* addedNode);
+bool RightLeftCase_Rotations_Insertion(Node<T>* addedNode);
 
 
 template<typename T>
-inline void LeftLeftCase_Rotations_Insertion(Node<T>* addedNode)
+inline bool LeftLeftCase_Rotations_Insertion(Node<T>* addedNode)
 {
-	RightRotation(addedNode);
+	bool isChangeRoot = RightRotation(addedNode);
 
 	// swap colors of P and G
 	addedNode->parent->color = BLACK;
 	addedNode->parent->right->color = RED;
+	return isChangeRoot;
 }
 
 template<typename T>
-inline void LeftRightCase_Rotations_Insertion(Node<T>* addedNode)
+inline bool LeftRightCase_Rotations_Insertion(Node<T>* addedNode)
 {
 	/* P's right son = X's left son
 	   X's left son's parent = P
@@ -55,19 +56,21 @@ inline void LeftRightCase_Rotations_Insertion(Node<T>* addedNode)
 	addedNode->parent->left = addedNode;
 
 	// call LL case for P (X's left son)
-	LeftLeftCase_Rotations_Insertion(addedNode->left);
+	bool isChangeRoot = LeftLeftCase_Rotations_Insertion(addedNode->left);
+	return isChangeRoot;
 }
 
 template<typename T>
-void RightRightCase_Rotations_Insertion(Node<T>* addedNode) {
-	LeftRotation(addedNode);
+bool RightRightCase_Rotations_Insertion(Node<T>* addedNode) {
+	bool isChangeRoot = LeftRotation(addedNode);
 
 	addedNode->parent->color = BLACK;
 	addedNode->parent->left->color = RED;
+	return isChangeRoot;
 }
 
 template<typename T>
-void RightLeftCase_Rotations_Insertion(Node<T>* addedNode) {
+bool RightLeftCase_Rotations_Insertion(Node<T>* addedNode) {
 	// right rotate P
 	addedNode->parent->left = addedNode->right;
 	addedNode->right = addedNode->parent;
@@ -79,5 +82,6 @@ void RightLeftCase_Rotations_Insertion(Node<T>* addedNode) {
 	addedNode->parent->right = addedNode;
 
 	// right right case for X's previous Parent (now X's right son = P)
-	RightRightCase_Rotations_Insertion(addedNode->right);
+	bool isChangeRoot = RightRightCase_Rotations_Insertion(addedNode->right);
+	return isChangeRoot;
 }
