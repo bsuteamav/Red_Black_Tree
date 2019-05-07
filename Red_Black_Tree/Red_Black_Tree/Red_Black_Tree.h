@@ -146,7 +146,7 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
                         balance(Son->parent->parent);
 
                     } 
-					else if (Son->parent->parent->right->color == BLACK) {
+					else if (Son->parent->parent->left->color == BLACK) {
                         //case 3b) rotations
                         performRotation(Son);
                     }
@@ -181,7 +181,13 @@ template <typename T>
 void Red_Black_Tree<T>::show(Node<T>*& Tree) {
     if (Tree != nullptr) {
         show(Tree->left);
-        cout << Tree->key << " - " << Tree->color << " ";
+		cout << Tree->key;
+		if (Tree->color == BLACK) {
+			cout << " - BLACK\n";
+		}
+		else {
+			cout << " - RED\n";
+		}
         show(Tree->right);
     }
 }

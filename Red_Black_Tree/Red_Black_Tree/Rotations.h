@@ -34,18 +34,18 @@ inline void LeftLeftRotation(Node<T>* addedNode)
 	addedNode->parent->right = addedNode->parent->parent;
 
 	// GP is not nullptr
-	if (addedNode->parent->parent != nullptr) {
+	if (addedNode->parent->parent->parent != nullptr) {
 		// GP's left son is G
 		if (addedNode->parent->parent->parent->left == addedNode->parent->parent) {
 			// P's parent = GP; GP's left son = P
 			addedNode->parent->parent = addedNode->parent->parent->parent;
-			addedNode->parent->parent->parent->left = addedNode->parent;
+			addedNode->parent->parent->left = addedNode->parent;
 		}
 		// GP's right son is G
 		else {
 			// P's parent = GP; GP's right son = P
 			addedNode->parent->parent = addedNode->parent->parent->parent;
-			addedNode->parent->parent->parent->right = addedNode->parent;
+			addedNode->parent->parent->right = addedNode->parent;
 		}
 	}
 	// GP is nullptr
