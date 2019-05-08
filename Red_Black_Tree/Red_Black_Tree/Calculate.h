@@ -5,6 +5,8 @@
 
 enum CASES {LL = 0, LR, RR, RL};
 
+// INSERTION
+
 template<typename T>
 int calculateCase(Node<T>* addedNode){
     //if addedNode = left son

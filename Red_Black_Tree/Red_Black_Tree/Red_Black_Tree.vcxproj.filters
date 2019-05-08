@@ -38,5 +38,8 @@
     <ClInclude Include="LeftAndRightRotations.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Calculate_Deletion.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

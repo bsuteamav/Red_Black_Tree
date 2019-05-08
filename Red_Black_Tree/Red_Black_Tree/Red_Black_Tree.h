@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Node.h"
 #include "Calculate.h"
+#include "Calculate_Deletion.h"
 
 using namespace std;
 
@@ -109,6 +110,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 	// node to be deleted was found;
 	
 	bool isFindedDoubleBlack = false; // needed when we need to delete black node
+	Node<T>* nodeToDelete = nullptr; // node that we will really delete
 
 	// case 1: finded node doesn't have children
 	if (findedNode->left == nullptr && findedNode->right == nullptr) {
@@ -127,7 +129,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 		// node is black -> we mark that we need to delete black node
 		else {
 			isFindedDoubleBlack = true;
-			Node<T>* nodeToDelete = findedNode;
+			nodeToDelete = findedNode;
 		}
 	}
 
@@ -190,7 +192,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 	// case 3: finded Node has both children
 	else {
 		// we go to the left subtree and find the rightest elem
-		Node<T>* nodeToDelete = findedNode->left;
+		nodeToDelete = findedNode->left;
 		while (nodeToDelete->right) {
 			nodeToDelete = nodeToDelete->right;
 		}
@@ -225,6 +227,167 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 				isFindedDoubleBlack = true;
 			}
 		}
+	}
+
+	// here cases when there is double black in tree
+	if (isFindedDoubleBlack) {
+		Node<T>* DoubleBlackLeaf = new Node<T>;
+		bool isChangeRoot;
+
+		// initialization of Double Black Leaf
+		DoubleBlackLeaf->isDoubleBlack = true;
+		DoubleBlackLeaf->left = nullptr;
+		DoubleBlackLeaf->right = nullptr;
+		DoubleBlackLeaf->parent = nodeToDelete->parent; // if we get in this IF, than nodeToDelete isn't nullptr
+		// nodeToDelete is left son
+		if (nodeToDelete->parent->left == nodeToDelete) {
+			nodeToDelete->parent->left = DoubleBlackLeaf;
+		}
+		// nodeToDelete is right son
+		else {
+			nodeToDelete->parent->right = DoubleBlackLeaf;
+		}
+		delete nodeToDelete;
+		nodeToDelete = nullptr;
+
+		Node<T>* currentNode = DoubleBlackLeaf;
+
+		// case 3.2 full
+		while (currentNode->isDoubleBlack == true && currentNode != root) {
+
+			// sibling is right son
+			if (currentNode->parent->left == currentNode) {
+
+				// case 3.2 a)
+
+				// sibling is black and at least one of his children is red
+				if (currentNode->parent->right->color == BLACK &&
+					(currentNode->parent->right->right != nullptr ||
+						currentNode->parent->right->left != nullptr)) {
+					
+					/*TRUE - no need to change root;
+					FALSE - need to change root on addedNode->parent*/
+					isChangeRoot = performRotation_Deletion(currentNode);
+					if (!isChangeRoot) {
+						root = currentNode->parent->parent;
+					}
+
+					// if currentNode == DoubleBlack leaf -> we delete DoubleBlack leaf
+					if (currentNode == DoubleBlackLeaf) {
+						DoubleBlackLeaf->parent->left = nullptr;
+						delete DoubleBlackLeaf;
+						DoubleBlackLeaf = nullptr;
+					}
+					currentNode->isDoubleBlack = false; // we did rotation -> tree is balanced
+				}
+
+				// case 3.2 b)
+				
+				// sibling is black and both children are black
+				else if (currentNode->parent->right->color == BLACK &&
+					currentNode->parent->right->right == nullptr &&
+					currentNode->parent->right->left == nullptr) {
+
+
+					currentNode->parent->right->color = RED; // recoloring sibling
+					currentNode->isDoubleBlack = false;
+
+					// if parent was red, we didn't need to recur for parent, we just make it black
+					if (currentNode->parent->color == RED) {
+						currentNode->parent->color = BLACK;
+						currentNode->isDoubleBlack = false;
+					}
+					// parent was black -> we recur for parent
+					else {
+						currentNode = currentNode->parent; // recur for currentNode->parent
+						currentNode->isDoubleBlack = true;
+					}
+
+					// first recur -> we need to delete doubleBlack leaf
+					if (DoubleBlackLeaf != nullptr) {
+						currentNode->left = nullptr;
+						delete DoubleBlackLeaf;
+						DoubleBlackLeaf = nullptr;
+					}
+
+				}
+
+				// case 3.2 c)
+
+				// sibling is red
+				else if (currentNode->parent->right->color == RED) {
+
+					// TODO : finish this method
+
+				}
+			}
+
+			// sibling is left son
+			else {
+
+				// case 3.2 a)
+
+				// sibling is black and at least one of his children is red
+				if (currentNode->parent->left->color == BLACK &&
+					(currentNode->parent->left->left != nullptr ||
+						currentNode->parent->left->right != nullptr)) {
+
+					/*TRUE - no need to change root;
+					FALSE - need to change root on addedNode->parent*/
+					isChangeRoot = performRotation_Deletion(currentNode);
+					if (!isChangeRoot) {
+						root = currentNode->parent->parent;
+					}
+
+					// if currentNode == DoubleBlack leaf -> we delete DoubleBlack leaf
+					if (currentNode == DoubleBlackLeaf) {
+						DoubleBlackLeaf->parent->right = nullptr;
+						delete DoubleBlackLeaf;
+					}
+					currentNode->isDoubleBlack = false; // we did rotation -> tree is balanced
+
+				}
+
+				// case 3.2 b)
+
+				// sibling is black and both children are black
+				else if (currentNode->parent->left->color == BLACK &&
+					currentNode->parent->left->right == nullptr &&
+					currentNode->parent->left->left == nullptr) {
+
+					currentNode->parent->left->color = RED; // recoloring sibling
+					currentNode->isDoubleBlack = false;
+
+					// if parent was red, we didn't need to recur for parent, we just make it black
+					if (currentNode->parent->color == RED) {
+						currentNode->parent->color = BLACK;
+						currentNode->isDoubleBlack = false;
+					}
+					// parent was black -> we recur for parent
+					else {
+						currentNode = currentNode->parent; // recur for currentNode->parent
+						currentNode->isDoubleBlack = true;
+					}
+
+					// first recur -> we need to delete doubleBlack leaf
+					if (DoubleBlackLeaf != nullptr) {
+						currentNode->right = nullptr;
+						delete DoubleBlackLeaf;
+						DoubleBlackLeaf = nullptr;
+					}
+				}
+
+				// case 3.2 c)
+
+				// sibling is red
+				else if (currentNode->parent->left->color == RED) {
+
+					// TODO: finish this method (sibling is left son)
+
+				}
+			}
+		}
+
 	}
 }
 
