@@ -12,6 +12,7 @@ private:
     Node<T>* root;
 
     void addNode(T data, Node<T>*& Tree);
+	void deleteNode(T data, Node<T>*& Tree);
     void show(Node<T>*& Tree);
 	Node<T>* search(T data, Node<T>* Tree);
     void balance(Node<T>*& Tree);
@@ -19,6 +20,7 @@ private:
 public:
     Red_Black_Tree();
     void addNode(T data);
+	void deleteNode(T data);
     void show();
     ~Red_Black_Tree();
 };
@@ -36,6 +38,12 @@ Red_Black_Tree<T>::~Red_Black_Tree() {
 template <typename T>
 void Red_Black_Tree<T>::addNode(T data) {
     this->addNode(data, root);
+}
+
+template<typename T>
+inline void Red_Black_Tree<T>::deleteNode(T data)
+{
+	this->deleteNode(data, this->root);
 }
 
 template <typename T>
@@ -85,6 +93,139 @@ void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
             }
         }
     }
+}
+
+template<typename T>
+inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
+{
+	// look for the node to be deleted
+	Node<T>* findedNode = search(data, Tree);
+
+	// if there is no such node in the tree
+	if (findedNode == nullptr) {
+		return;
+	}
+
+	// node to be deleted was found;
+	
+	bool isFindedDoubleBlack = false; // needed when we need to delete black node
+
+	// case 1: finded node doesn't have children
+	if (findedNode->left == nullptr && findedNode->right == nullptr) {
+		// node is red -> simply delete it
+		if (findedNode->color == RED) {
+			// findedNode is left child
+			if (findedNode->parent->left == findedNode) {
+				findedNode->parent->left = nullptr;
+			}
+			// finded Node is right child
+			else {
+				findedNode->parent->right = nullptr;
+			}
+			delete findedNode;
+		}
+		// node is black -> we mark that we need to delete black node
+		else {
+			isFindedDoubleBlack = true;
+			Node<T>* nodeToDelete = findedNode;
+		}
+	}
+
+	// case 2: finded Node has only one child (in this case son is always red and node is always black, so we dont need to recolor)
+	else if ((findedNode->left != nullptr && findedNode->right == nullptr) ||
+		(findedNode->left == nullptr && findedNode->right != nullptr)) {
+		// left son of findedNode != nullptr
+		if (findedNode->left != nullptr) {
+
+			// findedNode != root
+			if (findedNode != this->root) {
+				// finded node is left son
+				if (findedNode->parent->left == findedNode) {
+					findedNode->parent->left = findedNode->left;
+				}
+				// finded node is right son
+				else {
+					findedNode->parent->right = findedNode->left;
+				}
+
+				findedNode->left->parent = findedNode->parent;
+				findedNode->left->color = BLACK;
+				delete findedNode;
+			}
+
+			// finded node == root
+			else {
+				findedNode->key = findedNode->left->key;
+				delete findedNode->left;
+				findedNode->left = nullptr;
+			}
+		}
+		// right son of findedNode != nullptr
+		else {
+
+			// findedNode != root
+			if (findedNode != this->root) {
+				// findedNode is left son
+				if (findedNode->parent->left == findedNode) {
+					findedNode->parent->left = findedNode->right;
+				}
+				// findedNode is right son
+				else {
+					findedNode->parent->right = findedNode->right;
+				}
+
+				findedNode->right->parent = findedNode->parent;
+				findedNode->right->color = BLACK; // recolor
+				delete findedNode;
+			}
+			// findedNode == root
+			else {
+				findedNode->key = findedNode->right->key;
+				delete findedNode->right;
+				findedNode->right = nullptr;
+			}
+		}
+	}
+
+	// case 3: finded Node has both children
+	else {
+		// we go to the left subtree and find the rightest elem
+		Node<T>* nodeToDelete = findedNode->left;
+		while (nodeToDelete->right) {
+			nodeToDelete = nodeToDelete->right;
+		}
+		findedNode->key = nodeToDelete->key;
+
+		// if node to delete has son -> son is left child and son's color = red
+		if (nodeToDelete->left != nullptr) {
+			// node to delete is root of left subtree
+			if (findedNode->left == nodeToDelete) {
+				findedNode->left = nodeToDelete->left; // left son of finded node = left son of node to delete
+				nodeToDelete->left->parent = findedNode;
+				nodeToDelete->left->color = BLACK; // recolor son of nodeToDelete in BLACK
+				delete nodeToDelete;
+			}
+			// node to delete isn't root of left subtree
+			else {
+				nodeToDelete->parent->right = nodeToDelete->left; // left son of nodeToDelete becomes right son of nodeToDelete's parent
+				nodeToDelete->left->parent = nodeToDelete->parent;
+				nodeToDelete->left->color = BLACK;
+				delete nodeToDelete;
+			}
+		}
+		// if node to delete doesn't have son
+		else {
+			// if node to delete has RED color -> we simply delete it from tree
+			if (nodeToDelete->color == RED) {
+				nodeToDelete->parent->right = nullptr; // nodeToDelete was the rightest elem -> we need to make his parent's right = nullptr
+				delete nodeToDelete;
+			}
+			// if node to delete has BLACK color -> we mark that we need to delete black node
+			else {
+				isFindedDoubleBlack = true;
+			}
+		}
+	}
 }
 
 template <typename T>
