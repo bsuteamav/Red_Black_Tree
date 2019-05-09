@@ -3,8 +3,6 @@
 #include "Node.h"
 #include "Rotations_Deletion.h"
 
-enum CASES { LL = 0, LR, RR, RL };
-
 // DELETION
 
 template<typename T>

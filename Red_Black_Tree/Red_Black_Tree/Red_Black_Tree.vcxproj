@@ -118,12 +118,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Calculate.h" />
+    <ClInclude Include="Calculate_Insertion.h" />
     <ClInclude Include="Calculate_Deletion.h" />
     <ClInclude Include="LeftAndRightRotations.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Red_Black_Tree.h" />
-    <ClInclude Include="Rotations.h" />
+    <ClInclude Include="Rotations_Insertion.h" />
     <ClInclude Include="Rotations_Deletion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

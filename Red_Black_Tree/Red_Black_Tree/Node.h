@@ -1,6 +1,7 @@
 #pragma once
 
 enum COLORS { BLACK = 0, RED = 1 };
+enum ROTATE_CASES { LL = 0, LR, RR, RL };
 
 template <typename T>
 struct Node {

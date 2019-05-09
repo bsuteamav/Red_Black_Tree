@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Node.h"
-#include "Rotations.h"
-
-enum CASES {LL = 0, LR, RR, RL};
+#include "Rotations_Insertion.h"
 
 // INSERTION
 

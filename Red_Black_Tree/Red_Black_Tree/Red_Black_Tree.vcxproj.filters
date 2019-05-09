@@ -26,12 +26,6 @@
     <ClInclude Include="Red_Black_Tree.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rotations.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Calculate.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Rotations_Deletion.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -39,6 +33,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Calculate_Deletion.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculate_Insertion.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotations_Insertion.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

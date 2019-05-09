@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "Node.h"
-#include "Calculate.h"
+#include "Calculate_Insertion.h"
 #include "Calculate_Deletion.h"
 
 using namespace std;
@@ -266,7 +266,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 						currentNode->parent->right->left != nullptr)) {
 					
 					/*TRUE - no need to change root;
-					FALSE - need to change root on addedNode->parent*/
+					FALSE - need to change root on addedNode->parent->parent*/
 					isChangeRoot = performRotation_Deletion(currentNode);
 					if (!isChangeRoot) {
 						root = currentNode->parent->parent;
@@ -333,7 +333,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 						currentNode->parent->left->right != nullptr)) {
 
 					/*TRUE - no need to change root;
-					FALSE - need to change root on addedNode->parent*/
+					FALSE - need to change root on addedNode->parent->parent*/
 					isChangeRoot = performRotation_Deletion(currentNode);
 					if (!isChangeRoot) {
 						root = currentNode->parent->parent;
