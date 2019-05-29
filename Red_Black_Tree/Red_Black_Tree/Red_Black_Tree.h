@@ -133,59 +133,20 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 		}
 	}
 
-	// case 2: finded Node has only one child (in this case son is always red and node is always black, so we dont need to recolor)
+	// case 2: finded Node has only one child
 	else if ((findedNode->left != nullptr && findedNode->right == nullptr) ||
 		(findedNode->left == nullptr && findedNode->right != nullptr)) {
 		// left son of findedNode != nullptr
 		if (findedNode->left != nullptr) {
-
-			// findedNode != root
-			if (findedNode != this->root) {
-				// finded node is left son
-				if (findedNode->parent->left == findedNode) {
-					findedNode->parent->left = findedNode->left;
-				}
-				// finded node is right son
-				else {
-					findedNode->parent->right = findedNode->left;
-				}
-
-				findedNode->left->parent = findedNode->parent;
-				findedNode->left->color = BLACK;
-				delete findedNode;
-			}
-
-			// finded node == root
-			else {
-				findedNode->key = findedNode->left->key;
-				delete findedNode->left;
-				findedNode->left = nullptr;
-			}
+			findedNode->key = findedNode->left->key; 
+			// recursion
+			deleteNode(data, findedNode->left);
 		}
 		// right son of findedNode != nullptr
 		else {
-
-			// findedNode != root
-			if (findedNode != this->root) {
-				// findedNode is left son
-				if (findedNode->parent->left == findedNode) {
-					findedNode->parent->left = findedNode->right;
-				}
-				// findedNode is right son
-				else {
-					findedNode->parent->right = findedNode->right;
-				}
-
-				findedNode->right->parent = findedNode->parent;
-				findedNode->right->color = BLACK; // recolor
-				delete findedNode;
-			}
-			// findedNode == root
-			else {
-				findedNode->key = findedNode->right->key;
-				delete findedNode->right;
-				findedNode->right = nullptr;
-			}
+			findedNode->key = findedNode->right->key;
+			// recursion
+			deleteNode(data, findedNode->right);
 		}
 	}
 
@@ -198,35 +159,8 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 		}
 		findedNode->key = nodeToDelete->key;
 
-		// if node to delete has son -> son is left child and son's color = red
-		if (nodeToDelete->left != nullptr) {
-			// node to delete is root of left subtree
-			if (findedNode->left == nodeToDelete) {
-				findedNode->left = nodeToDelete->left; // left son of finded node = left son of node to delete
-				nodeToDelete->left->parent = findedNode;
-				nodeToDelete->left->color = BLACK; // recolor son of nodeToDelete in BLACK
-				delete nodeToDelete;
-			}
-			// node to delete isn't root of left subtree
-			else {
-				nodeToDelete->parent->right = nodeToDelete->left; // left son of nodeToDelete becomes right son of nodeToDelete's parent
-				nodeToDelete->left->parent = nodeToDelete->parent;
-				nodeToDelete->left->color = BLACK;
-				delete nodeToDelete;
-			}
-		}
-		// if node to delete doesn't have son
-		else {
-			// if node to delete has RED color -> we simply delete it from tree
-			if (nodeToDelete->color == RED) {
-				nodeToDelete->parent->right = nullptr; // nodeToDelete was the rightest elem -> we need to make his parent's right = nullptr
-				delete nodeToDelete;
-			}
-			// if node to delete has BLACK color -> we mark that we need to delete black node
-			else {
-				isFindedDoubleBlack = true;
-			}
-		}
+		// delete this finded node (using recursion)
+		deleteNode(data, nodeToDelete);
 	}
 
 	// here cases when there is double black in tree
