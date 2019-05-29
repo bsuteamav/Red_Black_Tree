@@ -190,12 +190,12 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 		while (currentNode->isDoubleBlack == true && currentNode != root) {
 
 			// sibling is right son
-			if (currentNode->parent->left == currentNode) {
+			if (!currentNode->sibling()->isOnLeft()) {
 
 				// case 3.2 a)
 
 				// sibling is black and at least one of his children is red
-				if (currentNode->parent->right->color == BLACK &&
+				if (currentNode->sibling()->color == BLACK &&
 					(currentNode->parent->right->right != nullptr ||
 						currentNode->parent->right->left != nullptr)) {
 					
@@ -208,6 +208,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 
 					// if currentNode == DoubleBlack leaf -> we delete DoubleBlack leaf
 					if (currentNode == DoubleBlackLeaf) {
+						currentNode = currentNode->parent;
 						DoubleBlackLeaf->parent->left = nullptr;
 						delete DoubleBlackLeaf;
 						DoubleBlackLeaf = nullptr;
@@ -249,9 +250,21 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 				// case 3.2 c)
 
 				// sibling is red
-				else if (currentNode->parent->right->color == RED) {
+				else if (currentNode->sibling()->color == RED) {
 
-					// TODO : finish this method
+					// recolor
+					currentNode->sibling()->color = BLACK;
+					currentNode->parent->color = RED;
+					LeftRotation(currentNode->sibling()->right);
+
+					currentNode->isDoubleBlack = false;
+					currentNode = currentNode->parent; // rise up
+					currentNode->isDoubleBlack = true;
+					if (currentNode->left == DoubleBlackLeaf) {
+						delete DoubleBlackLeaf;
+						DoubleBlackLeaf = nullptr;
+						currentNode->left = nullptr;
+					}
 
 				}
 			}
@@ -314,9 +327,21 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 				// case 3.2 c)
 
 				// sibling is red
-				else if (currentNode->parent->left->color == RED) {
+				else if (currentNode->sibling()->color == RED) {
 
-					// TODO: finish this method (sibling is left son)
+					// recolor
+					currentNode->sibling()->color = BLACK;
+					currentNode->parent->color = RED;
+					RightRotation(currentNode->sibling()->left);
+
+					currentNode->isDoubleBlack = false;
+					currentNode = currentNode->parent; // rise up
+					currentNode->isDoubleBlack = true;
+					if (currentNode->right == DoubleBlackLeaf) {
+						delete DoubleBlackLeaf;
+						DoubleBlackLeaf = nullptr;
+						currentNode->right = nullptr;
+					}
 
 				}
 			}
