@@ -67,6 +67,10 @@ int main() {
 	tree.deleteNode(22);
 	tree.show();
 
+	cout << "\n\nDeleting 13:\n";
+	tree.deleteNode(13);
+	tree.show();
+
 	system("pause");
 	return 0;
 }

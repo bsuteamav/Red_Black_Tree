@@ -58,7 +58,7 @@ struct Node {
 	}
 
 	bool hasRedChild() {
-		return (left != nullptr and left->color == RED) or
+		return (left != nullptr and left->color == RED) ||
 			(right != nullptr and right->color == RED);
 	}
 };

@@ -408,7 +408,7 @@ inline void Red_Black_Tree<T>::deleteNode(Node<T>* v)
 		return;
 	}
 
-	if (v->left == nullptr or v->right == nullptr) {
+	if (v->left == nullptr || v->right == nullptr) {
 		// v has 1 child 
 		if (v == root) {
 			// v is root, assign the value of u to v, and delete u 
@@ -438,7 +438,7 @@ inline void Red_Black_Tree<T>::deleteNode(Node<T>* v)
 		return;
 	}
 
-	// v has 2 children, swap values with successor and recurse 
+	// v has 2 children, swap values with predecessor and recurse 
 	swapValues(u, v);
 	deleteNode(u);
 
