@@ -32,26 +32,23 @@ int main() {
 	
 
 	// Left rotation (with root change)
-	/*tree.addNode(50);
+	tree.addNode(50);
 	tree.addNode(40);
 	tree.addNode(70);
 	tree.addNode(60);
 	tree.addNode(80);
 	tree.addNode(65);
 	tree.addNode(68);
-	tree.addNode(69);*/
+	tree.addNode(69);
 
+	tree.addNode(64);
 
-	// WHEN NODE TO DELETE IS ROOT AND HAS RIGHT SON
-	tree.addNode(20);
-	tree.addNode(30);
-
-	cout << "tree before deleting 20:\n";
 	tree.show();
 
-	cout << "\n\nTree after deleting 20:\n";
-	tree.deleteNode(20);
+	cout << "\n\nTree after deleting 40:\n";
+	tree.deleteNode(40);
 	tree.show();
+
 
 	system("pause");
 	return 0;

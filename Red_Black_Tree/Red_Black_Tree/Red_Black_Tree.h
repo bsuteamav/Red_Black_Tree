@@ -44,7 +44,19 @@ void Red_Black_Tree<T>::addNode(T data) {
 template<typename T>
 inline void Red_Black_Tree<T>::deleteNode(T data)
 {
-	this->deleteNode(data, this->root);
+	//this->deleteNode(data, this->root);
+	
+	// look for the node to be deleted
+	Node<T>* findedNode = search(data, this->root);
+
+	// if there is no such node in the tree
+	if (findedNode == nullptr) {
+		return;
+	}
+
+	// node to be deleted was found;
+	this->deleteNode(data, findedNode);
+
 }
 
 template <typename T>
@@ -97,18 +109,9 @@ void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
 }
 
 template<typename T>
-inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
+inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& findedNode)
 {
-	// look for the node to be deleted
-	Node<T>* findedNode = search(data, Tree);
 
-	// if there is no such node in the tree
-	if (findedNode == nullptr) {
-		return;
-	}
-
-	// node to be deleted was found;
-	
 	bool isFindedDoubleBlack = false; // needed when we need to delete black node
 	Node<T>* nodeToDelete = nullptr; // node that we will really delete
 
@@ -231,6 +234,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 					if (currentNode->parent->color == RED) {
 						currentNode->parent->color = BLACK;
 						currentNode->isDoubleBlack = false;
+						currentNode = currentNode->parent;
 					}
 					// parent was black -> we recur for parent
 					else {
@@ -256,6 +260,9 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 					currentNode->sibling()->color = BLACK;
 					currentNode->parent->color = RED;
 					LeftRotation(currentNode->sibling()->right);
+					//// another recolor
+					//currentNode->sibling()->color = RED;
+					//currentNode->parent->color = BLACK;
 
 					currentNode->isDoubleBlack = false;
 					currentNode = currentNode->parent; // rise up
@@ -318,7 +325,7 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 
 					// first recur -> we need to delete doubleBlack leaf
 					if (DoubleBlackLeaf != nullptr) {
-						currentNode->right = nullptr;
+						currentNode->parent->right = nullptr;
 						delete DoubleBlackLeaf;
 						DoubleBlackLeaf = nullptr;
 					}
@@ -347,6 +354,10 @@ inline void Red_Black_Tree<T>::deleteNode(T data, Node<T>*& Tree)
 			}
 		}
 
+		// case 3.3
+		if (currentNode == root) {
+			currentNode->isDoubleBlack = false;
+		}
 	}
 }
 
