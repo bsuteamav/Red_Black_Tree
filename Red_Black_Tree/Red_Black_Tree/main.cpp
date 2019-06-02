@@ -32,15 +32,43 @@ int main() {
 	
 
 	// Left rotation (with root change)
-	tree.addNode(50);
-	tree.addNode(40);
-	tree.addNode(70);
-	tree.addNode(60);
-	tree.addNode(80);
-	tree.addNode(65);
-	tree.addNode(68);
-	tree.addNode(69);
+	tree.addNode(7);
+	tree.addNode(3);
+	tree.addNode(18);
+	tree.addNode(10);
+	tree.addNode(22);
+	tree.addNode(8);
+	tree.addNode(11);
+	tree.addNode(26);
+	tree.addNode(2);
+	tree.addNode(6);
+	tree.addNode(13);
 
+	cout << "Tree before deleting:\n";
+	tree.show();
+
+	cout << "\nDeleting 18:\n";
+	tree.deleteNode(18);
+	tree.show();
+
+	cout << "\n\nDeleting 11\n";
+	tree.deleteNode(11);
+	tree.show();
+
+	cout << "\n\nDeleting 3:\n";
+	tree.deleteNode(3);
+	tree.show();
+
+	cout << "\n\nDeleting 10:\n";
+	tree.deleteNode(10);
+	tree.show();
+
+	cout << "\n\nDeleting 22:\n";
+	tree.deleteNode(22);
+	tree.show();
+
+	cout << "\n\nDeleting 13:\n";
+	tree.deleteNode(13);
 	tree.show();
 
 	system("pause");
