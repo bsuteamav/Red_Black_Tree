@@ -24,16 +24,11 @@ private:
 	Node<T>* BSTreplace(Node<T>* x);
 	void fixDoubleBlack(Node<T>* x);
 	void deleteNode(Node<T>* v);
-	
-public:
-	int getHeight(Node<T>* x) const;
-	Node<T>* getRoot() const;
 
 public:
     Red_Black_Tree();
     void addNode(T data);
 	void deleteNode(T data);
-	Node<T>* search(T data);
     void show();
     ~Red_Black_Tree();
 };
@@ -68,12 +63,6 @@ inline void Red_Black_Tree<T>::deleteNode(T data)
 	}
 
 	deleteNode(v);
-}
-
-template<typename T>
-inline Node<T>* Red_Black_Tree<T>::search(T data)
-{
-	return this->search(data, this->root);
 }
 
 template <typename T>
@@ -453,26 +442,6 @@ inline void Red_Black_Tree<T>::deleteNode(Node<T>* v)
 	swapValues(u, v);
 	deleteNode(u);
 
-}
-
-template<typename T>
-inline int Red_Black_Tree<T>::getHeight(Node<T>* x) const
-{
-	if (root == nullptr) {
-		return 0;
-	}
-
-	// find the height of each subtree
-	int lh = getHeight(x->left);
-	int rh = getHeight(x->right);
-
-	return 1 + max(lh, rh);
-}
-
-template<typename T>
-inline Node<T>* Red_Black_Tree<T>::getRoot() const
-{
-	return this->root;
 }
 
 
