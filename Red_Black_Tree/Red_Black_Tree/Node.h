@@ -2,6 +2,8 @@
 
 enum COLORS { BLACK = 0, RED = 1 };
 
+using namespace std;
+
 template <typename T>
 struct Node {
 	T key;
@@ -12,6 +14,8 @@ struct Node {
 	int height;
 	int	depth;
 	bool isDoubleBlack = false;
+
+
 
 	// returns pointer to uncle 
 	Node<T>* uncle() {
@@ -42,8 +46,7 @@ struct Node {
 		return parent->left;
 	}
 
-	// moves node down and moves given node in its place 
-	template<typename T>
+	// moves node down and moves given node in its place
 	void moveDown(Node<T>* nParent) {
 		if (parent != nullptr) {
 			if (isOnLeft()) {

@@ -10,12 +10,13 @@ using namespace std;
 template<typename T>
 class Red_Black_Tree {
 private:
-    Node<T>* root;
+	Node<T>* root;
 
-    void addNode(T data, Node<T>*& Tree);
-    void show(Node<T>*& Tree);
+	void addNode(T data, Node<T>*& Tree);
+	Node<T>* find(T n);
+	void show(Node<T>*& Tree);
 	Node<T>* search(T data, Node<T>* Tree);
-    void balance(Node<T>*& Tree);
+	void balance(Node<T>*& Tree);
 	void cleanup(Node<T>* tree); // for destructor
 
 	void leftRotate(Node<T>* x);
@@ -26,16 +27,23 @@ private:
 	void deleteNode(Node<T>* v);
 
 public:
-    Red_Black_Tree();
-    void addNode(T data);
+	int getHeight(Node<T>* x) const;
+	Node<T>* getRoot() const;
+
+public:
+
+	Red_Black_Tree();
+	void publicAddNode(T data);
 	void deleteNode(T data);
-    void show();
-    ~Red_Black_Tree();
+	Node<T>* search(T data);
+	void show();
+	~Red_Black_Tree();
 };
+
 
 template <typename T>
 Red_Black_Tree<T>::Red_Black_Tree() {
-    root = nullptr;
+	root = nullptr;
 }
 
 template <typename T>
@@ -44,8 +52,9 @@ Red_Black_Tree<T>::~Red_Black_Tree() {
 }
 
 template <typename T>
-void Red_Black_Tree<T>::addNode(T data) {
-    this->addNode(data, root);
+void Red_Black_Tree<T>::publicAddNode(T data) {
+	///here was changes
+	this->addNode(data, root);
 }
 
 template<typename T>
@@ -65,53 +74,84 @@ inline void Red_Black_Tree<T>::deleteNode(T data)
 	deleteNode(v);
 }
 
+template<typename T>
+inline Node<T>* Red_Black_Tree<T>::search(T data)
+{
+	return this->search(data, this->root);
+}
+
+//////////////////////////////////////////////////////////////////////
+
+template <typename T>
+Node<T>* Red_Black_Tree<T>::find(T n) {
+	Node<T>* temp = root;
+	while (temp != nullptr) {
+		if (n < temp->key) {
+			if (temp->left == nullptr)
+				break;
+			else
+				temp = temp->left;
+		}
+		else if (n == temp->key)
+			break;
+		else {
+			if (temp->right == nullptr)
+				break;
+			else
+				temp = temp->right;
+		}
+	}
+
+	return temp;
+}
+
 template <typename T>
 void Red_Black_Tree<T>::addNode(T data, Node<T> *&Tree) {
-    //if tree is empty
-    if (root == nullptr) {
-        root = new Node<T>;
-        root->key = data;
-        root->parent = nullptr;
-        root->color = BLACK; //constantly for the root
-        root->left = nullptr;
-        root->right = nullptr;
-        //new node is the root - don't need to do balance
-    }
-    else {
-        //left subtree
-        if (data < Tree->key) {
-            if (Tree->left != nullptr) {
-                addNode(data, Tree->left);
-            }
-            else {
-                Tree->left = new Node<T>;
-                Tree->left->key = data;
-                Tree->left->parent = Tree;
-                Tree->left->color = RED;
-                Tree->left->left = nullptr;
-                Tree->left->right = nullptr;
+	//if tree is empty
+	if (root == nullptr) {
+		root = new Node<T>;
+		root->key = data;
+		root->parent = nullptr;
+		root->color = BLACK; //constantly for the root
+		root->left = nullptr;
+		root->right = nullptr;
+		//new node is the root - don't need to do balance
+	}
+	else {
+		//left subtree
+		if (data < Tree->key) {
+			if (Tree->left != nullptr) {
+				addNode(data, Tree->left);
+			}
+			else {
+				Tree->left = new Node<T>;
+				Tree->left->key = data;
+				Tree->left->parent = Tree;
+				Tree->left->color = RED;
+				Tree->left->left = nullptr;
+				Tree->left->right = nullptr;
 
 				// call balance function for X (tree's left son)
-                balance(Tree->left);
-            }
-        }
-        //right subtree
-        else if (data > Tree->key) {
-            if (Tree->right != nullptr) {
-                addNode(data, Tree->right);
-            }
-            else {
-                Tree->right = new Node<T>;
-                Tree->right->key = data;
-                Tree->right->parent = Tree;
-                Tree->right->color = RED;
-                Tree->right->left = nullptr;
-                Tree->right->right = nullptr;
+				balance(Tree->left);
+			}
+		}
+		//right subtree
+		else if (data > Tree->key) {
+			if (Tree->right != nullptr) {
+				addNode(data, Tree->right);
+			}
+			else {
+				Tree->right = new Node<T>;
+				Tree->right->key = data;
+				Tree->right->parent = Tree;
+				Tree->right->color = RED;
+				Tree->right->left = nullptr;
+				Tree->right->right = nullptr;
 
-                balance(Tree->right);
-            }
-        }
-    }
+				balance(Tree->right);
+			}
+		}
+	}
 }
 
 template <typename T>
@@ -122,91 +162,91 @@ void Red_Black_Tree<T>::balance(Node<T> *&Son) {
 		return;
 	}
 
-    if (Son != root) {
-        if (Son->parent->color != BLACK) {
-            //if uncle is a Tree->parent->right
-            if (Son->parent == Son->parent->parent->left) {
-                //therefore uncle is a Son->parent->parent->right
-                if (Son->parent->parent->right != nullptr) {
-                    if (Son->parent->parent->right->color == RED) {
-                        //case 3a) full
+	if (Son != root) {
+		if (Son->parent->color != BLACK) {
+			//if uncle is a Tree->parent->right
+			if (Son->parent == Son->parent->parent->left) {
+				//therefore uncle is a Son->parent->parent->right
+				if (Son->parent->parent->right != nullptr) {
+					if (Son->parent->parent->right->color == RED) {
+						//case 3a) full
 
-                        //Change color of parent and uncle as BLACK
-                        Son->parent->color = BLACK;                 //change color of parent
-                        Son->parent->parent->right->color = BLACK;  //change color of uncle
+						//Change color of parent and uncle as BLACK
+						Son->parent->color = BLACK;                 //change color of parent
+						Son->parent->parent->right->color = BLACK;  //change color of uncle
 
-                        //color of grand parent as RED
-                        Son->parent->parent->color = RED;
+						//color of grand parent as RED
+						Son->parent->parent->color = RED;
 
-                        //Change x = x’s grandparent, repeat steps 2 and 3 for new x.
-                        //new x = Son->parent->parent
-                        balance(Son->parent->parent);
+						//Change x = x’s grandparent, repeat steps 2 and 3 for new x.
+						//new x = Son->parent->parent
+						balance(Son->parent->parent);
 
-                    } 
+					}
 					else if (Son->parent->parent->right->color == BLACK) {
-                        //case 3b) rotations
+						//case 3b) rotations
 						/*TRUE - no need to change root;
 						FALSE - need to change root on addedNode->parent*/
-                        isChangeRoot = performRotation(Son);
+						isChangeRoot = performRotation(Son);
 						if (!isChangeRoot) {
 							root = Son->parent;
 						}
-                    }
-                }
-                //uncle = nullptr
-                else {
-                    //case 3b) rotations
+					}
+				}
+				//uncle = nullptr
+				else {
+					//case 3b) rotations
 					/*TRUE - no need to change root;
 					FALSE - need to change root on addedNode->parent*/
 					isChangeRoot = performRotation(Son);
 					if (!isChangeRoot) {
 						root = Son->parent;
 					}
-                }
-            }
+				}
+			}
 
-            //if uncle is a Tree->parent->left
-            else if (Son->parent == Son->parent->parent->right) {
-                //therefore uncle is a Son->parent->parent->left
-                if (Son->parent->parent->left != nullptr) {
-                    if (Son->parent->parent->left->color == RED) {
+			//if uncle is a Tree->parent->left
+			else if (Son->parent == Son->parent->parent->right) {
+				//therefore uncle is a Son->parent->parent->left
+				if (Son->parent->parent->left != nullptr) {
+					if (Son->parent->parent->left->color == RED) {
 
-                        //case 3a) full
-                        //Change color of parent and uncle as BLACK
-                        Son->parent->color = BLACK;                 //change color of parent
-                        Son->parent->parent->left->color = BLACK;   //change color of uncle
+						//case 3a) full
+						//Change color of parent and uncle as BLACK
+						Son->parent->color = BLACK;                 //change color of parent
+						Son->parent->parent->left->color = BLACK;   //change color of uncle
 
-                        //color of grand parent as RED
-                        Son->parent->parent->color = RED;
+						//color of grand parent as RED
+						Son->parent->parent->color = RED;
 
-                        //Change x = x’s grandparent, repeat steps 2 and 3 for new x.
-                        //new x = Son->parent->parent
-                        balance(Son->parent->parent);
+						//Change x = x’s grandparent, repeat steps 2 and 3 for new x.
+						//new x = Son->parent->parent
+						balance(Son->parent->parent);
 
-                    } 
+					}
 					else if (Son->parent->parent->left->color == BLACK) {
-                        //case 3b) rotations
+						//case 3b) rotations
 						/*TRUE - no need to change root;
 						FALSE - need to change root on addedNode->parent*/
-                        isChangeRoot = performRotation(Son);
+						isChangeRoot = performRotation(Son);
 						if (!isChangeRoot) {
 							root = Son->parent;
 						}
-                    }
-                }
-                //uncle = nullptr
-                else {
-                    //case 3b) rotations
+					}
+				}
+				//uncle = nullptr
+				else {
+					//case 3b) rotations
 					/*TRUE - no need to change root;
 					FALSE - need to change root on addedNode->parent*/
 					isChangeRoot = performRotation(Son);
 					if (!isChangeRoot) {
 						root = Son->parent;
 					}
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 }
 
 template<typename T>
@@ -444,18 +484,32 @@ inline void Red_Black_Tree<T>::deleteNode(Node<T>* v)
 
 }
 
+template<typename T>
+inline int Red_Black_Tree<T>::getHeight(Node<T>* x) const
+{
+	if (x == nullptr)
+		return 0;
+	return 1 + std::max(getHeight(x->left), getHeight(x->right));
+}
+
+template<typename T>
+inline Node<T>* Red_Black_Tree<T>::getRoot() const
+{
+	return this->root;
+}
+
 
 
 template <typename T>
 void Red_Black_Tree<T>::show()
 {
-    this->show(this->root);
+	this->show(this->root);
 }
 
 template <typename T>
 void Red_Black_Tree<T>::show(Node<T>*& Tree) {
-    if (Tree != nullptr) {
-        show(Tree->left);
+	if (Tree != nullptr) {
+		show(Tree->left);
 		cout << Tree->key;
 		if (Tree->color == BLACK) {
 			cout << " - BLACK\n";
@@ -463,8 +517,8 @@ void Red_Black_Tree<T>::show(Node<T>*& Tree) {
 		else {
 			cout << " - RED\n";
 		}
-        show(Tree->right);
-    }
+		show(Tree->right);
+	}
 }
 
 template<typename T>
